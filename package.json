@@ -3,14 +3,18 @@
   "version": "0.0.0",
   "main": "dist/index.js",
   "bin": {
-    "phac": "dist/index.js"
+    "atelerix": "dist/index.js"
   },
   "scripts": {
     "build": "rimraf dist && vite build",
-    "start": "NODE_OPTIONS='--loader ts-node/esm' ts-node -r tsconfig-paths/register src/index.ts"
+    "cli": "NODE_OPTIONS='--loader ts-node/esm' ts-node -r tsconfig-paths/register src/index.ts",
+    "globalize": "pnpm link --global"
   },
   "dependencies": {
     "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "json5": "^2.2.3",
+    "jsonc": "^2.0.0",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
@@ -21,7 +25,6 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "vite": "^6.2.0",
-    "vite-plugin-node": "^4.0.0",
-    "vite-plugin-static-copy": "^2.3.0"
+    "vite-plugin-node": "^4.0.0"
   }
 }

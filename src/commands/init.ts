@@ -1,7 +1,8 @@
-import { ConfigFile } from "@/types/config-file";
 import { Command } from "commander";
 import * as fs from "fs";
 import * as path from "path";
+import jsonc from "jsonc";
+import { ConfigFile } from "@/types/config-file";
 
 export function setupInitCommand(program: Command) {
   program
@@ -32,16 +33,52 @@ export function setupInitCommand(program: Command) {
         return;
       }
       console.log("Creating config file...");
-      const sourceFilePath = path.resolve(
-        __dirname + "/../../assets/atelerix.jsonc"
-      );
-      fs.copyFileSync(sourceFilePath, configFilePath);
+
+      fs.writeFileSync(configFilePath, getDefaultConfigJsonFile());
       const relativePath = path.relative(process.cwd(), configFilePath);
 
-      console.log(`Created config file at ${relativePath}`);
-
-      // parse the config file to ensure it's valid
-      const timestampDiff = Date.now() - timestamp;
-      console.log(`Config file initialized in ${timestampDiff}ms.`);
+      console.log(`Initialized config file at ${relativePath}`);
     });
+}
+
+function getDefaultConfigJsonFile(): string {
+  const DEFAULT_CONFIG: ConfigFile = {
+    host: "env('POSTHOG_HOST')",
+    apiKey: "env('POSTHOG_API_KEY')",
+    flags: [
+      {
+        enabled: true,
+        name: "feature-flag-example",
+        description: "A sample feature flag",
+        persistAcrossAuthSteps: true,
+        payload: {
+          type: "release-toggle",
+          payload: {
+            message: "Welcome to Posthog-as-Code!",
+          },
+          variants: [
+            {
+              key: "paying-users-only",
+              rolloutPercentage: 100,
+              payload: {
+                message: "Thanks for being a paying user!",
+              },
+            },
+          ],
+        },
+        releaseCondition: {
+          matchBy: "users",
+          variants: [
+            {
+              key: "user-type",
+              operator: "equals",
+              value: "premium",
+            },
+          ],
+        },
+      },
+    ],
+  };
+
+  return JSON.stringify(DEFAULT_CONFIG, null, 2);
 }
