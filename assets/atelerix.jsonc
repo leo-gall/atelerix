@@ -1,0 +1,37 @@
+{
+  "host": "env('POSTHOG_HOST')",
+  "apiKey": "env('POSTHOG_API_KEY')",
+  "flags": [
+    {
+      "enabled": true,
+      "name": "feature-flag-example",
+      "description": "A sample feature flag",
+      "persistAcrossAuthSteps": true,
+      "payload": {
+        "type": "release-toggle",
+        "payload": {
+          "message": "Welcome to Posthog-as-Code!"
+        },
+        "variants": [
+          {
+            "key": "paying-users-only",
+            "rolloutPercentage": 100,
+            "payload": {
+              "message": "Thanks for being a paying user!"
+            }
+          }
+        ]
+      },
+      "releaseCondition": {
+        "matchBy": "users",
+        "variants": [
+          {
+            "key": "user-type",
+            "operator": "equals",
+            "value": "premium"
+          }
+        ]
+      }
+    }
+  ]
+}

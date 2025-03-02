@@ -1,5 +1,7 @@
 import { defineConfig } from "vite";
 import { VitePluginNode } from "vite-plugin-node";
+import { viteStaticCopy } from "vite-plugin-static-copy";
+import path from "path";
 
 export default defineConfig({
   build: {
@@ -16,18 +18,24 @@ export default defineConfig({
         inlineDynamicImports: true,
       },
     },
-    terserOptions: {
-      compress: true,
-      mangle: true,
-      format: {
-        comments: false,
-      },
-    },
   },
   plugins: [
     VitePluginNode({
       adapter: "express",
       appPath: "./src/index.ts",
     }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: "artifacts/atelerix.jsonc",
+          dest: ".",
+        },
+      ],
+    }),
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
 });
