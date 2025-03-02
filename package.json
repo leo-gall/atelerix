@@ -1,0 +1,25 @@
+{
+  "name": "phac-cli",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "bin": {
+    "phac": "dist/index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && vite build",
+    "start": "ts-node src/index.ts",
+    "dev": "pnpm start"
+  },
+  "dependencies": {
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "@types/commander": "^2.12.5",
+    "@types/node": "^22.13.8",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.0",
+    "vite-plugin-node": "^4.0.0"
+  }
+}
